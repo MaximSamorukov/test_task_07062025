@@ -1,0 +1,11 @@
+body {
+  padding: 0;
+  margin: 0;
+  background-color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#root {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+}
