@@ -11,6 +11,10 @@ export interface Product {
   price: number;
 }
 
+export interface OrderItem extends Product {
+  count: number;
+}
+
 export interface ProductsResponse {
   page: number;
   amount: number;

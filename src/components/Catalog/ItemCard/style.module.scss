@@ -1,0 +1,111 @@
+.item {
+  &Container {
+    width: 301px;
+    height: 812px;
+    background-color: #d9d9d9;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  &Image {
+    width: 100%;
+    height: 366px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  &Title {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    height: 125px;
+    span {
+      text-align: center;
+    }
+  }
+  &Description {
+    width: 100%;
+    font-size: 24px;
+    height: 150px;
+    overflow: hidden;
+  }
+  &Price {
+    width: 100%;
+    font-size: 36px;
+    height: 70px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+
+    span {
+      text-align: center;
+    }
+  }
+  &Control {
+    &Container {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      box-sizing: border-box;
+      flex: 1;
+    }
+    &BuyButton {
+      width: 100%;
+      border-radius: 15px;
+      background-color: #222222;
+      font-size: 36px;
+      color: #f0f0f0;
+      height: 68px;
+    }
+    &CountControl {
+      &Container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      &Count {
+        width: 50%;
+        font-size: 36px;
+        color: #f0f0f0;
+        height: 68px;
+        background-color: #222222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+      }
+      &PlusMinus {
+        all: unset;
+        width: 24%;
+        font-size: 36px;
+        color: #f0f0f0;
+        height: 68px;
+        background-color: #222222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+
+        span {
+          line-height: 1px;
+          font-size: 36px;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
