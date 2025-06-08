@@ -1,18 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import s from "./style.module.scss";
-import type { Product } from "../../service/types";
-import apiService from "../../service";
 import { ItemCard } from "./ItemCard";
+import { getAllItems } from "../../store/slices/catalog";
+import { getCatalogByPage } from "../../store/actions/catalog";
+import { useAppDispatch, useAppSelector } from "../../store/actions";
 
 export const Catalog = () => {
-  const [items, setItems] = useState<Product[]>([]);
+  const dispatch = useAppDispatch();
+  const items = useAppSelector(getAllItems);
   useEffect(() => {
-    apiService
-      .getProducts()
-      .then((i) => {
-        setItems(i.items);
-      })
-      .catch(() => setItems([]));
+    dispatch(getCatalogByPage());
   }, []);
   return (
     <div className={s.catalogContainer}>

@@ -1,27 +1,67 @@
 import { useState } from "react";
-import type { OrderItem } from "../../service/types";
+import cn from "classnames";
+import { IMaskInput } from "react-imask";
+import type { Product } from "../../service/types";
 import s from "./style.module.scss";
+import { useAppDispatch, useAppSelector } from "../../store/actions";
+import { removeAllItemsById } from "../../store/slices/cart";
 
 export const Cart = () => {
-  const [items] = useState<OrderItem[]>([]);
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const selectedItems = useAppSelector((s) =>
+    Object.entries(s.cart.items).filter(([_, { count }]) => !!count)
+  );
+  const removePosition = (item: Product) => {
+    dispatch(removeAllItemsById(item));
+  };
+  const submitButtonIsDisabled =
+    !selectedItems.length || phoneNumber.length < 11;
   return (
     <div className={s.cartContainer}>
       <div className={s.cartBody}>
         <div className={s.cartBodyHeader}>Добавленные товары</div>
-        <div className={s.cartBodyItems}>
+        <div
+          className={cn(s.cartBodyItems, !selectedItems.length && s.centered)}
+        >
           <div className={s.cartBodyItemsContainer}>
-            {items.map((i) => (
-              <div className={s.cartBodyItemsItem}>
+            {!selectedItems.length && (
+              <div className={s.emptyLabel}>товары не добавлены</div>
+            )}
+            {selectedItems.map(([_, i]) => (
+              <div key={i.id} className={s.cartBodyItemsItem}>
                 <div className={s.cartBodyItemsItemLabel}>{i.title}</div>
                 <div className={s.cartBodyItemsItemCount}>{`x ${i.count}`}</div>
                 <div className={s.cartBodyItemsItemPrice}>{`${i.price} ₽`}</div>
+                <button
+                  onClick={() => removePosition(i)}
+                  className={s.cartBodyItemsItemRemove}
+                >
+                  x
+                </button>
               </div>
             ))}
           </div>
         </div>
         <div className={s.cartBodyControls}>
-          <input className={s.cartBodyControlsInput} />
-          <button className={s.cartBodyControlsSubmit}>Заказать</button>
+          <IMaskInput
+            className={s.cartBodyControlsInput}
+            mask="+{7}(000)000-00-00"
+            lazy={false}
+            placeholder="+7(___)___-__-__"
+            onAccept={(_value, mask) => {
+              setPhoneNumber(mask.unmaskedValue);
+            }}
+          />
+          <button
+            disabled={submitButtonIsDisabled}
+            className={cn(
+              s.cartBodyControlsSubmit,
+              submitButtonIsDisabled && s.cartBodyControlsSubmitDisabled
+            )}
+          >
+            Заказать
+          </button>
         </div>
       </div>
     </div>
