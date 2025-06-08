@@ -17,6 +17,7 @@ export const ItemCard: React.FC<Product> = (i) => {
     if (s.cart.items[i.id]?.count > 0) return true;
     return false;
   });
+
   const currentItem = useAppSelector(({ cart }) => {
     const currentId = i.id;
     if (cart.items[currentId]) {
@@ -26,6 +27,9 @@ export const ItemCard: React.FC<Product> = (i) => {
     }
   });
   const onClickBuyBtn = () => {
+    if (!currentItem.count) {
+      dispatch(addOneItem(i));
+    }
     dispatch(selectOneItem(i));
   };
   const onChangeAmount = (arg: "add" | "substract") => {

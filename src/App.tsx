@@ -4,6 +4,7 @@ import { Reviews } from "./components/Reviews";
 import { Cart } from "./components/Cart";
 import { Space } from "./components/Space";
 import { Catalog } from "./components/Catalog";
+import { PopupComponent } from "./components/PopupComponent";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Cart />
         <Space />
         <Catalog />
+        <PopupComponent />
       </div>
     </div>
   );

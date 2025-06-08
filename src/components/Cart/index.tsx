@@ -4,7 +4,12 @@ import { IMaskInput } from "react-imask";
 import type { Product } from "../../service/types";
 import s from "./style.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/actions";
-import { removeAllItemsById } from "../../store/slices/cart";
+import {
+  removeAllItemsById,
+  resetAll,
+  toggleModal,
+} from "../../store/slices/cart";
+import apiService from "../../service";
 
 export const Cart = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -17,6 +22,23 @@ export const Cart = () => {
   };
   const submitButtonIsDisabled =
     !selectedItems.length || phoneNumber.length < 11;
+
+  const submitOrder = () => {
+    apiService
+      .submitOrder({
+        phone: phoneNumber,
+        cart: selectedItems.map(([_, i]) => ({ id: i.id, quantity: i.count })),
+      })
+      .then((result) => {
+        if (!result.error) {
+          dispatch(resetAll());
+        }
+        dispatch(toggleModal({ ...result, state: true }));
+      })
+      .catch(() => {
+        dispatch(toggleModal({ error: "error", success: 0, state: true }));
+      });
+  };
   return (
     <div className={s.cartContainer}>
       <div className={s.cartBody}>
@@ -54,6 +76,7 @@ export const Cart = () => {
             }}
           />
           <button
+            onClick={submitOrder}
             disabled={submitButtonIsDisabled}
             className={cn(
               s.cartBodyControlsSubmit,
