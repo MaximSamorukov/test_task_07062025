@@ -5,11 +5,12 @@ import { getAllItems } from "../../store/slices/catalog";
 import { getCatalogByPage } from "../../store/actions/catalog";
 import { useAppDispatch, useAppSelector } from "../../store/actions";
 import { localStorageService } from "../../service/localStorageService";
-import { setItems } from "../../store/slices/cart";
+import { setItems, toggleModal } from "../../store/slices/cart";
 
 export const Catalog = () => {
   const dispatch = useAppDispatch();
   const items = useAppSelector(getAllItems);
+  const requestCount = useAppSelector((state) => state.catalog.requestCount);
   const total = useAppSelector((state) => state.catalog.total);
   const currentPage = useAppSelector((state) => state.catalog.page);
   const currentAmount = useAppSelector((state) => state.catalog.amount);
@@ -17,6 +18,10 @@ export const Catalog = () => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const loadMore = useCallback(() => {
+    if (requestCount >= 3) {
+      dispatch(toggleModal({ error: "error", success: 0, state: true }));
+      return;
+    }
     if (total > 0 && total === items.length) return;
     const currentRealPageNumber = items.length / currentAmount || 0;
     if (currentPage === currentRealPageNumber) {

@@ -11,6 +11,7 @@ interface CatalogState {
   total: number;
   pending: boolean;
   selectedItem: (Product & { amount?: number }) | null;
+  requestCount: number;
 }
 
 const initialState: CatalogState = {
@@ -20,6 +21,7 @@ const initialState: CatalogState = {
   total: 0,
   pending: false,
   selectedItem: null,
+  requestCount: 0,
 };
 
 export const catalogSlice = createSlice({
@@ -56,6 +58,7 @@ export const catalogSlice = createSlice({
         state.amount = payload.amount;
         state.total = payload.total;
         state.pending = false;
+        state.requestCount = 0;
       })
       .addCase(getCatalogByPage.rejected, (state) => {
         state.items = [];
@@ -63,6 +66,7 @@ export const catalogSlice = createSlice({
         state.amount = 0;
         state.total = 0;
         state.pending = false;
+        state.requestCount = state.requestCount + 1;
       })
       .addCase(getCatalogByPage.pending, (state) => {
         state.pending = true;

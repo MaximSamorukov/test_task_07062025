@@ -75,7 +75,7 @@ export const cartSlice = createSlice({
     ) => {
       if (action.payload.error) {
         state.result = {
-          label: "Ошибка сохранения",
+          label: "Ошибка сетового запроса",
           state: action.payload.state,
         };
       }
