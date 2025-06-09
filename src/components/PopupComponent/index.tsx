@@ -1,16 +1,10 @@
 import Popup from "reactjs-popup";
 import { useAppDispatch, useAppSelector } from "../../store/actions";
-import { closeModal } from "../../store/slices/cart";
+import { closeModal, getCartResult } from "../../store/slices/cart";
 import s from "./style.module.scss";
 
 export const PopupComponent = () => {
-  const { label, state } = useAppSelector(
-    (s) =>
-      s.cart.result || {
-        label: "",
-        state: false,
-      }
-  );
+  const { label, state } = useAppSelector(getCartResult);
   const dispatch = useAppDispatch();
 
   const closeModalHandler = () => dispatch(closeModal());

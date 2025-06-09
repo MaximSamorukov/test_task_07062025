@@ -5,18 +5,19 @@ import type { Product } from "../../service/types";
 import s from "./style.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/actions";
 import {
+  getSelectedItem,
   removeAllItemsById,
   resetAll,
+  setSavingOrderState,
   toggleModal,
 } from "../../store/slices/cart";
 import apiService from "../../service";
+import { localStorageService } from "../../service/localStorageService";
 
 export const Cart = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const dispatch = useAppDispatch();
-  const selectedItems = useAppSelector((s) =>
-    Object.entries(s.cart.items).filter(([_, { count }]) => !!count)
-  );
+  const selectedItems = useAppSelector(getSelectedItem);
   const removePosition = (item: Product) => {
     dispatch(removeAllItemsById(item));
   };
@@ -24,18 +25,23 @@ export const Cart = () => {
     !selectedItems.length || phoneNumber.length < 11;
 
   const submitOrder = () => {
+    dispatch(setSavingOrderState({ nextState: true }));
     apiService
       .submitOrder({
         phone: phoneNumber,
         cart: selectedItems.map(([_, i]) => ({ id: i.id, quantity: i.count })),
       })
       .then((result) => {
+        dispatch(setSavingOrderState({ nextState: false }));
+
         if (!result.error) {
           dispatch(resetAll());
+          localStorageService.clearOrderItems();
         }
         dispatch(toggleModal({ ...result, state: true }));
       })
       .catch(() => {
+        dispatch(setSavingOrderState({ nextState: false }));
         dispatch(toggleModal({ error: "error", success: 0, state: true }));
       });
   };

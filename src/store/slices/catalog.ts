@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../index";
 import type { Product, ProductsResponse } from "../../service/types";
@@ -51,7 +51,7 @@ export const catalogSlice = createSlice({
     builder
       .addCase(getCatalogByPage.fulfilled, (state, data) => {
         const { payload } = data;
-        state.items = payload.items;
+        state.items = [...state.items, ...payload.items];
         state.page = payload.page;
         state.amount = payload.amount;
         state.total = payload.total;
@@ -80,5 +80,9 @@ export const {
 export const getAllItems = (state: RootState) => state.catalog.items;
 export const getPage = (state: RootState) => state.catalog.page;
 export const getTotalAmount = (state: RootState) => state.catalog.total;
-
+export const makeGetCartItemById = (id: number) =>
+  createSelector(
+    (state: RootState) => state.cart.items[id],
+    (item) => (item ? { ...item } : undefined)
+  );
 export default catalogSlice.reducer;

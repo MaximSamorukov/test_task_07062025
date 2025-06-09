@@ -5,6 +5,7 @@ import { Cart } from "./components/Cart";
 import { Space } from "./components/Space";
 import { Catalog } from "./components/Catalog";
 import { PopupComponent } from "./components/PopupComponent";
+import { Spinner } from "./components/Spinner";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Space />
         <Catalog />
         <PopupComponent />
+        <Spinner />
       </div>
     </div>
   );

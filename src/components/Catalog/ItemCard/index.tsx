@@ -6,6 +6,7 @@ import {
   removeOneItem,
   selectOneItem,
 } from "../../../store/slices/cart";
+import { makeGetCartItemById } from "../../../store/slices/catalog";
 
 import s from "./style.module.scss";
 
@@ -18,14 +19,10 @@ export const ItemCard: React.FC<Product> = (i) => {
     return false;
   });
 
-  const currentItem = useAppSelector(({ cart }) => {
-    const currentId = i.id;
-    if (cart.items[currentId]) {
-      return cart.items[currentId];
-    } else {
-      return { ...i, count: 0 } as OrderItem;
-    }
-  });
+  const currentItem = useAppSelector(makeGetCartItemById(i.id)) || {
+    ...i,
+    count: 0,
+  };
   const onClickBuyBtn = () => {
     if (!currentItem.count) {
       dispatch(addOneItem(i));

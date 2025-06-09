@@ -1,7 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { OrderItem, Product, OrderResponse } from "../../service/types";
 import { localStorageService } from "../../service/localStorageService";
+import type { RootState } from "..";
 
 interface CartState {
   items: Record<OrderItem["id"], OrderItem>;
@@ -10,11 +11,13 @@ interface CartState {
     label: string;
     state: boolean;
   };
+  savingOrder: boolean;
 }
 
 const initialState: CartState = {
   items: {},
   selectedItemId: undefined,
+  savingOrder: false,
 };
 
 export const cartSlice = createSlice({
@@ -86,6 +89,12 @@ export const cartSlice = createSlice({
     closeModal: (state) => {
       state.result = undefined;
     },
+    setSavingOrderState: (
+      state,
+      action: PayloadAction<{ nextState: boolean }>
+    ) => {
+      state.savingOrder = action.payload.nextState;
+    },
   },
 });
 
@@ -99,6 +108,16 @@ export const {
   closeModal,
   resetAll,
   setItems,
+  setSavingOrderState,
 } = cartSlice.actions;
 
+export const getSelectedItem = createSelector(
+  (state: RootState) => state.cart.items,
+  (items) => Object.entries(items).filter(([_, { count }]) => !!count)
+);
+
+export const getCartResult = createSelector(
+  (state: RootState) => state.cart.result,
+  (result) => result || { label: "", state: false }
+);
 export default cartSlice.reducer;

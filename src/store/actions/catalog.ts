@@ -7,6 +7,7 @@ export const getCatalogByPage = createAsyncThunk<
   { page?: number } | undefined
 >("catalog/getItemsByPageNumber", async (data = {}) => {
   const { page = 1 } = data;
+
   try {
     const response = await apiService.getProducts(page);
     return response as ProductsResponse;
