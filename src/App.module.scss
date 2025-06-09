@@ -8,14 +8,24 @@
   align-items: center;
   margin-right: 0;
   margin-left: 0;
+
+  margin: 0;
 }
 
 .contentContainer {
-  width: 1442px;
+  width: 100%;
+  max-width: 1442px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   background-color: transparent;
-  border: 1px solid red;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 400px) {
+  .contentContainer {
+    padding: 0 12px;
+  }
 }

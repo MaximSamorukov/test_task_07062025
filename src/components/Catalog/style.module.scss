@@ -1,6 +1,7 @@
 .catalog {
   &Container {
-    width: 983px;
+    max-width: 983px;
+    width: 100%;
     height: fit-content;
     display: flex;
     flex-direction: row;
@@ -8,5 +9,20 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 10px;
+  }
+}
+
+@media (max-width: 500px) {
+  .catalog {
+    &Container {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
   }
 }

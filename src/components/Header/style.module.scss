@@ -16,3 +16,19 @@
   color: white;
   line-height: 70px;
 }
+
+@media (max-width: 500px) {
+  .container {
+    width: 90%;
+    height: auto;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .header {
+    font-size: 36px;
+    line-height: 42px;
+    text-align: center;
+    white-space: wrap;
+  }
+}
