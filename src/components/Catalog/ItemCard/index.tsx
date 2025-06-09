@@ -1,4 +1,4 @@
-import type { OrderItem, Product } from "../../../service/types";
+import type { Product } from "../../../service/types";
 import { useAppDispatch, useAppSelector } from "../../../store/actions";
 import {
   addOneItem,
