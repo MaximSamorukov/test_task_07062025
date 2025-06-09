@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { OrderItem, Product, OrderResponse } from "../../service/types";
+import { localStorageService } from "../../service/localStorageService";
 
 interface CartState {
   items: Record<OrderItem["id"], OrderItem>;
@@ -26,6 +27,7 @@ export const cartSlice = createSlice({
         ...selectedItem,
         count: (selectedItem.count || 0) + 1,
       };
+      localStorageService.saveOrderItems(Object.values(state.items));
     },
     removeOneItem: (state, action: PayloadAction<Product>) => {
       const selectedItem = state.items[action.payload.id] || action.payload;
@@ -33,6 +35,7 @@ export const cartSlice = createSlice({
         ...selectedItem,
         count: selectedItem.count - 1 <= 0 ? 0 : selectedItem.count - 1,
       };
+      localStorageService.saveOrderItems(Object.values(state.items));
     },
     selectOneItem: (state, action: PayloadAction<Product>) => {
       state.selectedItemId = action.payload.id;
@@ -49,11 +52,19 @@ export const cartSlice = createSlice({
         state.selectedItemId = undefined;
       }
       state.items[action.payload.id].count = 0;
+      localStorageService.saveOrderItems(Object.values(state.items));
     },
     onBlur: (state) => (state.selectedItemId = undefined),
     resetAll: (state) => {
       state.items = {};
       state.selectedItemId = undefined;
+      localStorageService.saveOrderItems([]);
+    },
+    setItems: (state, action: PayloadAction<OrderItem[]>) => {
+      state.items = action.payload.reduce((acc, i) => {
+        acc[i.id] = i;
+        return acc;
+      }, {} as Record<OrderItem["id"], OrderItem>);
     },
     toggleModal: (
       state,
@@ -87,6 +98,7 @@ export const {
   toggleModal,
   closeModal,
   resetAll,
+  setItems,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
